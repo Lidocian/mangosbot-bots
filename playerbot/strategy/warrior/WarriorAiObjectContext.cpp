@@ -4,7 +4,8 @@
 #include "WarriorAiObjectContext.h"
 #include "GenericWarriorNonCombatStrategy.h"
 #include "TankWarriorStrategy.h"
-#include "DpsWarriorStrategy.h"
+#include "FuryWarriorStrategy.h"
+#include "ArmsWarriorStrategy.h"
 #include "../generic/PullStrategy.h"
 #include "WarriorTriggers.h"
 #include "../NamedObjectContext.h"
@@ -25,12 +26,14 @@ namespace ai
             {
                 creators["nc"] = &warrior::StrategyFactoryInternal::nc;
                 creators["pull"] = &warrior::StrategyFactoryInternal::pull;
-                creators["aoe"] = &warrior::StrategyFactoryInternal::aoe;
+                creators["fury aoe"] = &warrior::StrategyFactoryInternal::fury_aoe;
+                creators["arms aoe"] = &warrior::StrategyFactoryInternal::arms_aoe;
             }
 
         private:
             static Strategy* nc(PlayerbotAI* ai) { return new GenericWarriorNonCombatStrategy(ai); }
-            static Strategy* aoe(PlayerbotAI* ai) { return new DpsWarrirorAoeStrategy(ai); }
+            static Strategy* arms_aoe(PlayerbotAI* ai) { return new ArmsWarrirorAoeStrategy(ai); }
+            static Strategy* fury_aoe(PlayerbotAI* ai) { return new FuryWarrirorAoeStrategy(ai); }
             static Strategy* pull(PlayerbotAI* ai) { return new PullStrategy(ai, "shoot"); }
         };
 
@@ -40,12 +43,14 @@ namespace ai
             CombatStrategyFactoryInternal() : NamedObjectContext<Strategy>(false, true)
             {
                 creators["tank"] = &warrior::CombatStrategyFactoryInternal::tank;
-                creators["dps"] = &warrior::CombatStrategyFactoryInternal::dps;
+                creators["fury"] = &warrior::CombatStrategyFactoryInternal::fury;
+                creators["arms"] = &warrior::CombatStrategyFactoryInternal::arms;
             }
 
         private:
             static Strategy* tank(PlayerbotAI* ai) { return new TankWarriorStrategy(ai); }
-            static Strategy* dps(PlayerbotAI* ai) { return new DpsWarriorStrategy(ai); }
+            static Strategy* fury(PlayerbotAI* ai) { return new FuryWarriorStrategy(ai); }
+            static Strategy* arms(PlayerbotAI* ai) { return new ArmsWarriorStrategy(ai); }
         };
     };
 };

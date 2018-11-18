@@ -101,10 +101,12 @@ namespace ai
                 creators["missile barrage"] = &TriggerFactoryInternal::missile_barrage;
                 creators["arcane blast"] = &TriggerFactoryInternal::arcane_blast;
                 creators["counterspell on enemy healer"] = &TriggerFactoryInternal::counterspell_enemy_healer;
+                creators["ice lance"] = &TriggerFactoryInternal::Icelance;
 
             }
 
         private:
+           static Trigger* Icelance(PlayerbotAI* ai) { return new IceLanceTrigger(ai); }
             static Trigger* hot_streak(PlayerbotAI* ai) { return new HotStreakTrigger(ai); }
             static Trigger* fireball(PlayerbotAI* ai) { return new FireballTrigger(ai); }
             static Trigger* pyroblast(PlayerbotAI* ai) { return new PyroblastTrigger(ai); }
@@ -138,6 +140,7 @@ namespace ai
         public:
             AiObjectContextInternal()
             {
+                creators["ice lance"] = &AiObjectContextInternal::ice_lance;
                 creators["frostbolt"] = &AiObjectContextInternal::frostbolt;
                 creators["blizzard"] = &AiObjectContextInternal::blizzard;
                 creators["frost nova"] = &AiObjectContextInternal::frost_nova;
@@ -179,6 +182,7 @@ namespace ai
             static Action* arcane_missiles(PlayerbotAI* ai) { return new CastArcaneMissilesAction(ai); }
             static Action* arcane_barrage(PlayerbotAI* ai) { return new CastArcaneBarrageAction(ai); }
             static Action* arcane_blast(PlayerbotAI* ai) { return new CastArcaneBlastAction(ai); }
+            static Action* ice_lance(PlayerbotAI* ai) { return new CastIceLanceAction(ai); }
             static Action* frostbolt(PlayerbotAI* ai) { return new CastFrostboltAction(ai); }
             static Action* blizzard(PlayerbotAI* ai) { return new CastBlizzardAction(ai); }
             static Action* frost_nova(PlayerbotAI* ai) { return new CastFrostNovaAction(ai); }

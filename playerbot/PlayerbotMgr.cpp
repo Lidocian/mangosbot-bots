@@ -77,9 +77,9 @@ Player* PlayerbotHolder::GetPlayerBot(uint64 playerGuid) const
 
 void PlayerbotHolder::OnBotLogin(Player * const bot)
 {
-	PlayerbotAI* ai = new PlayerbotAI(bot);
-	bot->SetPlayerbotAI(ai);
-	OnBotLoginInternal(bot);
+   PlayerbotAI* ai = new PlayerbotAI(bot);
+   bot->SetPlayerbotAI(ai);
+   OnBotLoginInternal(bot);
 
     playerBots[bot->GetObjectGuid().GetRawValue()] = bot;
 
@@ -223,11 +223,11 @@ string PlayerbotHolder::ProcessBotCommand(string cmd, ObjectGuid guid, bool admi
 
 bool PlayerbotMgr::HandlePlayerbotMgrCommand(ChatHandler* handler, char const* args)
 {
-	if (!sPlayerbotAIConfig.enabled)
-	{
-		handler->PSendSysMessage("|cffff0000Playerbot system is currently disabled!");
+   if (!sPlayerbotAIConfig.enabled)
+   {
+      handler->PSendSysMessage("|cffff0000Playerbot system is currently disabled!");
         return false;
-	}
+   }
 
     WorldSession *m_session = handler->GetSession();
 
@@ -303,14 +303,14 @@ list<string> PlayerbotHolder::HandlePlayerbotCommand(char const* args, Player* m
         Group::MemberSlotList slots = group->GetMemberSlots();
         for (Group::member_citerator i = slots.begin(); i != slots.end(); i++)
         {
-			ObjectGuid member = i->guid;
+         ObjectGuid member = i->guid;
 
-			if (member.GetRawValue() == master->GetObjectGuid().GetRawValue())
-				continue;
+         if (member.GetRawValue() == master->GetObjectGuid().GetRawValue())
+            continue;
 
-			string bot;
-			if (sObjectMgr.GetPlayerNameByGUID(member, bot))
-			    bots.insert(bot);
+         string bot;
+         if (sObjectMgr.GetPlayerNameByGUID(member, bot))
+             bots.insert(bot);
         }
     }
 
@@ -348,9 +348,9 @@ list<string> PlayerbotHolder::HandlePlayerbotCommand(char const* args, Player* m
                 bots.insert(charName);
             } while (results->NextRow());
 
-			delete results;
+         delete results;
         }
-	}
+   }
 
     for (set<string>::iterator i = bots.begin(); i != bots.end(); ++i)
     {
@@ -390,7 +390,7 @@ uint32 PlayerbotHolder::GetAccountId(string name)
     {
         Field* fields = results->Fetch();
         accountId = fields[0].GetUInt32();
-		delete results;
+      delete results;
     }
 
     return accountId;
@@ -443,7 +443,7 @@ string PlayerbotHolder::ListBots(Player* master)
                     classes[name] = classNames[cls];
                 }
             } while (results->NextRow());
-			delete results;
+         delete results;
         }
     }
 

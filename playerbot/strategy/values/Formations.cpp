@@ -9,12 +9,12 @@ WorldLocation Formation::NullLocation = WorldLocation();
 
 bool IsSameLocation(WorldLocation const &a, WorldLocation const &b)
 {
-	return a.coord_x == b.coord_x && a.coord_y == b.coord_y && a.coord_z == b.coord_z && a.mapid == b.mapid;
+   return a.coord_x == b.coord_x && a.coord_y == b.coord_y && a.coord_z == b.coord_z && a.mapid == b.mapid;
 }
 
 bool Formation::IsNullLocation(WorldLocation const& loc)
 {
-	return IsSameLocation(loc, Formation::NullLocation);
+   return IsSameLocation(loc, Formation::NullLocation);
 }
 
 
@@ -103,7 +103,7 @@ namespace ai
                 return WorldLocation();
 
             float range = sPlayerbotAIConfig.followDistance;
-			float angle = GetFollowAngle();
+         float angle = GetFollowAngle();
 
             time_t now = time(0);
             if (!lastChangeTime || now - lastChangeTime >= 3) {
@@ -144,7 +144,7 @@ namespace ai
                 target = master;
 
             if (!target)
-				return Formation::NullLocation;
+            return Formation::NullLocation;
 
             switch (bot->getClass())
             {
@@ -319,7 +319,7 @@ bool SetFormationAction::Execute(Event event)
 {
     string formation = event.getParam();
 
-	Value<Formation*>* value = context->GetValue<Formation*>("formation");
+   Value<Formation*>* value = context->GetValue<Formation*>("formation");
     if (formation == "?" || formation.empty())
     {
         ostringstream str; str << "Formation: |cff00ff00" << value->Get()->getName();

@@ -13,3 +13,9 @@ bool MageArmorTrigger::IsActive()
         !ai->HasAura("molten armor", target) &&
         !ai->HasAura("mage armor", target);
 }
+
+bool IceLanceTrigger::IsActive()
+{
+   Unit* target = AI_VALUE(Unit*, "current target");
+   return target->IsFrozen();
+}

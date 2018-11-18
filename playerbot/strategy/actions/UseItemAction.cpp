@@ -126,22 +126,22 @@ bool UseItemAction::UseItem(Item* item, ObjectGuid goGuid, Item* itemTarget)
         targetSelected = true;
     }
 
-	Player* master = GetMaster();
-	if (!targetSelected && item->GetProto()->Class != ITEM_CLASS_CONSUMABLE && master)
-	{
-		ObjectGuid masterSelection = master->GetSelectionGuid();
-		if (masterSelection)
-		{
-			Unit* unit = ai->GetUnit(masterSelection);
-			if (unit)
-			{
-			    targetFlag = TARGET_FLAG_UNIT;
-				*packet << targetFlag << masterSelection.WriteAsPacked();
-				out << " on " << unit->GetName();
-				targetSelected = true;
-			}
-		}
-	}
+   Player* master = GetMaster();
+   if (!targetSelected && item->GetProto()->Class != ITEM_CLASS_CONSUMABLE && master)
+   {
+      ObjectGuid masterSelection = master->GetSelectionGuid();
+      if (masterSelection)
+      {
+         Unit* unit = ai->GetUnit(masterSelection);
+         if (unit)
+         {
+             targetFlag = TARGET_FLAG_UNIT;
+            *packet << targetFlag << masterSelection.WriteAsPacked();
+            out << " on " << unit->GetName();
+            targetSelected = true;
+         }
+      }
+   }
 
     if(uint32 questid = item->GetProto()->StartQuest)
     {
@@ -176,8 +176,8 @@ bool UseItemAction::UseItem(Item* item, ObjectGuid goGuid, Item* itemTarget)
         if (!ai->CanCastSpell(spellId, bot, false))
             continue;
 
-		const SpellEntry* const pSpellInfo = sSpellStore.LookupEntry(spellId);
-		if (pSpellInfo->Targets & TARGET_FLAG_ITEM)
+      const SpellEntry* const pSpellInfo = sSpellStore.LookupEntry(spellId);
+      if (pSpellInfo->Targets & TARGET_FLAG_ITEM)
         {
             Item* itemForSpell = AI_VALUE2(Item*, "item for spell", spellId);
             if (!itemForSpell)
@@ -223,7 +223,7 @@ bool UseItemAction::UseItem(Item* item, ObjectGuid goGuid, Item* itemTarget)
 
     ItemPrototype const* proto = item->GetProto();
     if (proto->Class == ITEM_CLASS_CONSUMABLE && (proto->SubClass == ITEM_SUBCLASS_FOOD || proto->SubClass == ITEM_SUBCLASS_CONSUMABLE) &&
-		(proto->Spells[0].SpellCategory == 11 || proto->Spells[0].SpellCategory == 59))
+      (proto->Spells[0].SpellCategory == 11 || proto->Spells[0].SpellCategory == 59))
     {
         if (bot->IsInCombat())
             return false;
@@ -232,7 +232,7 @@ bool UseItemAction::UseItem(Item* item, ObjectGuid goGuid, Item* itemTarget)
         ai->InterruptSpell();
         ai->SetNextCheckDelay(30000);
     }
-	else
+   else
     {
         ai->SetNextCheckDelay(sPlayerbotAIConfig.globalCoolDown);
     }

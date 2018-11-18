@@ -30,7 +30,7 @@ NextAction** toNextActionArray(string actions)
         if (na)
             res[index++] = na;
     }
-	res[index++] = NULL;
+   res[index++] = NULL;
     return res;
 }
 

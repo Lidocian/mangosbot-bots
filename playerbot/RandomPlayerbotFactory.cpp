@@ -119,15 +119,15 @@ bool RandomPlayerbotFactory::CreateRandomBot(uint8 cls)
     pair<uint8,uint8> face = faces[urand(0, faces.size() - 1)];
     pair<uint8,uint8> hair = hairs[urand(0, hairs.size() - 1)];
 
-	bool excludeCheck = (race == RACE_TAUREN) || (gender == GENDER_FEMALE && race != RACE_NIGHTELF && race != RACE_UNDEAD);
-	uint8 facialHair = excludeCheck ? 0 : facialHairTypes[urand(0, facialHairTypes.size() - 1)];
+   bool excludeCheck = (race == RACE_TAUREN) || (gender == GENDER_FEMALE && race != RACE_NIGHTELF && race != RACE_UNDEAD);
+   uint8 facialHair = excludeCheck ? 0 : facialHairTypes[urand(0, facialHairTypes.size() - 1)];
 
-	WorldSession* session = new WorldSession(accountId, NULL, SEC_PLAYER,
+   WorldSession* session = new WorldSession(accountId, NULL, SEC_PLAYER,
 #ifdef MANGOSBOT_ONE
         1,
 #endif
         0, LOCALE_enUS);
-	if (!session)
+   if (!session)
     {
         sLog.outError("Couldn't create session for random bot account %d", accountId);
         delete session;
@@ -135,12 +135,12 @@ bool RandomPlayerbotFactory::CreateRandomBot(uint8 cls)
     }
 
     Player *player = new Player(session);
-	if (!player->Create(sObjectMgr.GeneratePlayerLowGuid(), name, race, cls, gender,
-	        face.second, // skinColor,
-	        face.first,
-	        hair.first,
-	        hair.second, // hairColor,
-	        facialHair, 0))
+   if (!player->Create(sObjectMgr.GeneratePlayerLowGuid(), name, race, cls, gender,
+           face.second, // skinColor,
+           face.first,
+           hair.first,
+           hair.second, // hairColor,
+           facialHair, 0))
     {
         player->DeleteFromDB(player->GetObjectGuid(), accountId, true, true);
         delete session;
@@ -180,8 +180,8 @@ string RandomPlayerbotFactory::CreateRandomBotName(uint8 gender)
         return "";
     }
 
-	fields = result->Fetch();
-	delete result;
+   fields = result->Fetch();
+   delete result;
     return fields[0].GetString();
 }
 
@@ -199,7 +199,7 @@ void RandomPlayerbotFactory::CreateRandomBots()
                 Field* fields = results->Fetch();
                 sAccountMgr.DeleteAccount(fields[0].GetUInt32());
             } while (results->NextRow());
-			delete results;
+         delete results;
         }
 
         CharacterDatabase.Execute("DELETE FROM ai_playerbot_random_bots");
@@ -213,7 +213,7 @@ void RandomPlayerbotFactory::CreateRandomBots()
         QueryResult* results = LoginDatabase.PQuery("SELECT id FROM account where username = '%s'", accountName.c_str());
         if (results)
         {
-			delete results;
+         delete results;
             continue;
         }
 
@@ -241,7 +241,7 @@ void RandomPlayerbotFactory::CreateRandomBots()
 
         Field* fields = results->Fetch();
         uint32 accountId = fields[0].GetUInt32();
-		delete results;
+      delete results;
 
         sPlayerbotAIConfig.randomBotAccounts.push_back(accountId);
 
@@ -286,11 +286,11 @@ void RandomPlayerbotFactory::CreateRandomGuilds()
                     uint32 guid = fields[0].GetUInt32();
                     randomBots.push_back(guid);
                 } while (results2->NextRow());
-				delete results2;
+            delete results2;
             }
 
         } while (results->NextRow());
-		delete results;
+      delete results;
     }
 
     if (sPlayerbotAIConfig.deleteRandomBotGuilds)
@@ -383,7 +383,7 @@ string RandomPlayerbotFactory::CreateRandomGuildName()
     }
 
     fields = result->Fetch();
-	delete result;
+   delete result;
     return fields[0].GetString();
 }
 

@@ -3,6 +3,9 @@
 
 namespace ai
 {
+   BEGIN_TRIGGER(IceLanceTrigger, Trigger)
+      END_TRIGGER()
+
     class ArcaneIntellectOnPartyTrigger : public BuffOnPartyTrigger {
     public:
         ArcaneIntellectOnPartyTrigger(PlayerbotAI* ai) : BuffOnPartyTrigger(ai, "arcane intellect", 7) {}
@@ -22,12 +25,12 @@ namespace ai
     class LivingBombTrigger : public DebuffTrigger {
     public:
         LivingBombTrigger(PlayerbotAI* ai) : DebuffTrigger(ai, "living bomb") {}
-	};
+   };
 
     class FireballTrigger : public DebuffTrigger {
     public:
         FireballTrigger(PlayerbotAI* ai) : DebuffTrigger(ai, "fireball") {}
-	};
+   };
 
     class PyroblastTrigger : public DebuffTrigger {
     public:

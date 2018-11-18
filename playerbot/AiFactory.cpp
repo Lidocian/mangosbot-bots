@@ -178,8 +178,18 @@ void AiFactory::AddDefaultCombatStrategies(Player* player, PlayerbotAI* const fa
                 engine->addStrategy("dps debuff");
             break;
         case CLASS_ROGUE:
-            engine->addStrategies("dps", "threat", "dps assist", NULL);
-            break;
+           if (tab == 0)
+           {
+              if (player->getLevel() > 40)
+                 engine->addStrategies("assa dps", "dps assist", "threat", NULL);
+
+              else engine->addStrategies("combat dps", "dps assist", "threat", NULL);
+           }
+           else if (tab == 1)
+              engine->addStrategies("combat dps", "dps assist", "threat", NULL);
+           else if (tab == 2)
+              engine->addStrategies("sub dps", "dps assist", "threat", NULL);
+           break;
         case CLASS_WARLOCK:
             if (tab == 1)
                 engine->addStrategies("tank", "threat", NULL);
@@ -211,7 +221,7 @@ void AiFactory::AddDefaultCombatStrategies(Player* player, PlayerbotAI* const fa
 }
 
 Engine* AiFactory::createCombatEngine(Player* player, PlayerbotAI* const facade, AiObjectContext* AiObjectContext) {
-	Engine* engine = new Engine(facade, AiObjectContext);
+   Engine* engine = new Engine(facade, AiObjectContext);
     AddDefaultCombatStrategies(player, facade, engine);
     return engine;
 }
@@ -284,10 +294,10 @@ void AiFactory::AddDefaultNonCombatStrategies(Player* player, PlayerbotAI* const
 }
 
 Engine* AiFactory::createNonCombatEngine(Player* player, PlayerbotAI* const facade, AiObjectContext* AiObjectContext) {
-	Engine* nonCombatEngine = new Engine(facade, AiObjectContext);
+   Engine* nonCombatEngine = new Engine(facade, AiObjectContext);
 
     AddDefaultNonCombatStrategies(player, facade, nonCombatEngine);
-	return nonCombatEngine;
+   return nonCombatEngine;
 }
 
 void AiFactory::AddDefaultDeadStrategies(Player* player, PlayerbotAI* const facade, Engine* deadEngine)

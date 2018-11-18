@@ -157,12 +157,12 @@ bool RandomPlayerbotMgr::ProcessBot(uint32 bot)
     uint32 isValid = GetEventValue(bot, "add");
     if (!isValid)
     {
-		Player* player = GetPlayerBot(bot);
-		if (!player || !player->GetGroup())
-		{
-			sLog.outString("Bot %d expired", bot);
-			SetEventValue(bot, "add", 0, 0);
-		}
+      Player* player = GetPlayerBot(bot);
+      if (!player || !player->GetGroup())
+      {
+         sLog.outString("Bot %d expired", bot);
+         SetEventValue(bot, "add", 0, 0);
+      }
         return true;
     }
 
@@ -222,11 +222,11 @@ bool RandomPlayerbotMgr::ProcessBot(Player* player)
 
     if (player->GetGuildId())
     {
-		Guild* guild = sGuildMgr.GetGuildById(player->GetGuildId());
-		if (guild->GetLeaderGuid().GetRawValue() == player->GetObjectGuid().GetRawValue()) {
-			for (vector<Player*>::iterator i = players.begin(); i != players.end(); ++i)
-				sGuildTaskMgr.Update(*i, player);
-		}
+      Guild* guild = sGuildMgr.GetGuildById(player->GetGuildId());
+      if (guild->GetLeaderGuid().GetRawValue() == player->GetObjectGuid().GetRawValue()) {
+         for (vector<Player*>::iterator i = players.begin(); i != players.end(); ++i)
+            sGuildTaskMgr.Update(*i, player);
+      }
     }
 
     uint32 randomize = GetEventValue(bot, "randomize");
@@ -292,18 +292,18 @@ void RandomPlayerbotMgr::RandomTeleport(Player* bot, vector<WorldLocation> &locs
         if (!map)
             continue;
 
-		const TerrainInfo * terrain = map->GetTerrain();
-		if (!terrain)
-			continue;
+      const TerrainInfo * terrain = map->GetTerrain();
+      if (!terrain)
+         continue;
 
-		AreaTableEntry const* area = sAreaStore.LookupEntry(terrain->GetAreaId(x, y, z));
-		if (!area)
-			continue;
+      AreaTableEntry const* area = sAreaStore.LookupEntry(terrain->GetAreaId(x, y, z));
+      if (!area)
+         continue;
 
-		if (!terrain->IsOutdoors(x, y, z) ||
-			terrain->IsUnderWater(x, y, z) ||
-			terrain->IsInWater(x, y, z))
-			continue;
+      if (!terrain->IsOutdoors(x, y, z) ||
+         terrain->IsUnderWater(x, y, z) ||
+         terrain->IsInWater(x, y, z))
+         continue;
 
         float ground = map->GetHeight(x, y, z + 0.5f);
         if (ground <= INVALID_HEIGHT)
@@ -439,7 +439,7 @@ void RandomPlayerbotMgr::RandomTeleportForLevel(Player* bot)
                 WorldLocation loc(mapId, x, y, z, 0);
                 locsPerLevelCache[bot->getLevel()].push_back(loc);
             } while (results->NextRow());
-			delete results;
+         delete results;
         }
     }
 
@@ -487,11 +487,11 @@ void RandomPlayerbotMgr::Randomize(Player* bot)
 
 void RandomPlayerbotMgr::IncreaseLevel(Player* bot)
 {
-	uint32 maxLevel = sPlayerbotAIConfig.randomBotMaxLevel;
-	if (maxLevel > sWorld.getConfig(CONFIG_UINT32_MAX_PLAYER_LEVEL))
-		maxLevel = sWorld.getConfig(CONFIG_UINT32_MAX_PLAYER_LEVEL);
+   uint32 maxLevel = sPlayerbotAIConfig.randomBotMaxLevel;
+   if (maxLevel > sWorld.getConfig(CONFIG_UINT32_MAX_PLAYER_LEVEL))
+      maxLevel = sWorld.getConfig(CONFIG_UINT32_MAX_PLAYER_LEVEL);
 
-	uint32 level = min((uint32)(bot->getLevel() + 1), maxLevel);
+   uint32 level = min((uint32)(bot->getLevel() + 1), maxLevel);
     PlayerbotFactory factory(bot, level);
     if (bot->GetGuildId())
         factory.Refresh();
@@ -502,53 +502,53 @@ void RandomPlayerbotMgr::IncreaseLevel(Player* bot)
 
 void RandomPlayerbotMgr::RandomizeFirst(Player* bot)
 {
-	uint32 maxLevel = sPlayerbotAIConfig.randomBotMaxLevel;
-	if (maxLevel > sWorld.getConfig(CONFIG_UINT32_MAX_PLAYER_LEVEL))
-		maxLevel = sWorld.getConfig(CONFIG_UINT32_MAX_PLAYER_LEVEL);
+   uint32 maxLevel = sPlayerbotAIConfig.randomBotMaxLevel;
+   if (maxLevel > sWorld.getConfig(CONFIG_UINT32_MAX_PLAYER_LEVEL))
+      maxLevel = sWorld.getConfig(CONFIG_UINT32_MAX_PLAYER_LEVEL);
 
-	for (int attempt = 0; attempt < 100; ++attempt)
-	{
-		int index = urand(0, sPlayerbotAIConfig.randomBotMaps.size() - 1);
-		uint32 mapId = sPlayerbotAIConfig.randomBotMaps[index];
+   for (int attempt = 0; attempt < 100; ++attempt)
+   {
+      int index = urand(0, sPlayerbotAIConfig.randomBotMaps.size() - 1);
+      uint32 mapId = sPlayerbotAIConfig.randomBotMaps[index];
 
-		vector<GameTele const*> locs;
-		GameTeleMap const & teleMap = sObjectMgr.GetGameTeleMap();
-		for (GameTeleMap::const_iterator itr = teleMap.begin(); itr != teleMap.end(); ++itr)
-		{
-			GameTele const* tele = &itr->second;
-			if (tele->mapId == mapId)
-				locs.push_back(tele);
-		}
+      vector<GameTele const*> locs;
+      GameTeleMap const & teleMap = sObjectMgr.GetGameTeleMap();
+      for (GameTeleMap::const_iterator itr = teleMap.begin(); itr != teleMap.end(); ++itr)
+      {
+         GameTele const* tele = &itr->second;
+         if (tele->mapId == mapId)
+            locs.push_back(tele);
+      }
 
-		index = urand(0, locs.size() - 1);
-		if (index >= locs.size())
-			return;
-		GameTele const* tele = locs[index];
-		uint32 level = GetZoneLevel(tele->mapId, tele->position_x, tele->position_y, tele->position_z);
-		if (level > maxLevel + 5)
-			continue;
+      index = urand(0, locs.size() - 1);
+      if (index >= locs.size())
+         return;
+      GameTele const* tele = locs[index];
+      uint32 level = GetZoneLevel(tele->mapId, tele->position_x, tele->position_y, tele->position_z);
+      if (level > maxLevel + 5)
+         continue;
 
-		level = min(level, maxLevel);
-		if (!level) level = 1;
+      level = min(level, maxLevel);
+      if (!level) level = 1;
 
-		if (urand(0, 100) < 100 * sPlayerbotAIConfig.randomBotMaxLevelChance)
-			level = maxLevel;
+      if (urand(0, 100) < 100 * sPlayerbotAIConfig.randomBotMaxLevelChance)
+         level = maxLevel;
 
-		if (level < sPlayerbotAIConfig.randomBotMinLevel)
-			continue;
+      if (level < sPlayerbotAIConfig.randomBotMinLevel)
+         continue;
 
-		PlayerbotFactory factory(bot, level);
-		factory.CleanRandomize();
-		RandomTeleportForLevel(bot);
-		break;
-	}
+      PlayerbotFactory factory(bot, level);
+      factory.CleanRandomize();
+      RandomTeleportForLevel(bot);
+      break;
+   }
 }
 
 uint32 RandomPlayerbotMgr::GetZoneLevel(uint16 mapId, float teleX, float teleY, float teleZ)
 {
-	uint32 maxLevel = sWorld.getConfig(CONFIG_UINT32_MAX_PLAYER_LEVEL);
+   uint32 maxLevel = sWorld.getConfig(CONFIG_UINT32_MAX_PLAYER_LEVEL);
 
-	uint32 level;
+   uint32 level;
     QueryResult* results = WorldDatabase.PQuery("select avg(t.minlevel) minlevel, avg(t.maxlevel) maxlevel from creature c "
             "inner join creature_template t on c.id = t.entry "
             "where map = '%u' and minlevel > 1 and abs(position_x - '%f') < '%u' and abs(position_y - '%f') < '%u'",
@@ -562,7 +562,7 @@ uint32 RandomPlayerbotMgr::GetZoneLevel(uint16 mapId, float teleX, float teleY, 
         level = urand(minLevel, maxLevel);
         if (level > maxLevel)
             level = maxLevel;
-		delete results;
+      delete results;
     }
     else
     {
@@ -584,18 +584,18 @@ void RandomPlayerbotMgr::Refresh(Player* bot)
 
     bot->GetPlayerbotAI()->Reset();
 
-	HostileReference *ref = bot->GetHostileRefManager().getFirst();
-	while (ref)
-	{
-		ThreatManager *threatManager = ref->getSource();
-		Unit *unit = threatManager->getOwner();
-		float threat = ref->getThreat();
+   HostileReference *ref = bot->GetHostileRefManager().getFirst();
+   while (ref)
+   {
+      ThreatManager *threatManager = ref->getSource();
+      Unit *unit = threatManager->getOwner();
+      float threat = ref->getThreat();
 
-		unit->RemoveAllAttackers();
-		unit->ClearInCombat();
+      unit->RemoveAllAttackers();
+      unit->ClearInCombat();
 
-		ref = ref->next();
-	}
+      ref = ref->next();
+   }
 
     bot->RemoveAllAttackers();
     bot->ClearInCombat();
@@ -605,8 +605,8 @@ void RandomPlayerbotMgr::Refresh(Player* bot)
         , false
 #endif
     );
-	bot->SetHealthPercent(100);
-	bot->SetPvP(true);
+   bot->SetHealthPercent(100);
+   bot->SetPvP(true);
 
     if (bot->GetMaxPower(POWER_MANA) > 0)
         bot->SetPower(POWER_MANA, bot->GetMaxPower(POWER_MANA));
@@ -618,7 +618,7 @@ void RandomPlayerbotMgr::Refresh(Player* bot)
 
 bool RandomPlayerbotMgr::IsRandomBot(Player* bot)
 {
-	return IsRandomBot(bot->GetObjectGuid());
+   return IsRandomBot(bot->GetObjectGuid());
 }
 
 bool RandomPlayerbotMgr::IsRandomBot(uint32 bot)
@@ -641,7 +641,7 @@ list<uint32> RandomPlayerbotMgr::GetBots()
             uint32 bot = fields[0].GetUInt32();
             bots.push_back(bot);
         } while (results->NextRow());
-		delete results;
+      delete results;
     }
 
     return bots;
@@ -663,8 +663,8 @@ uint32 RandomPlayerbotMgr::GetEventValue(uint32 bot, string event)
         uint32 validIn = fields[2].GetUInt32();
         if ((time(0) - lastChangeTime) >= validIn)
             value = 0;
-		delete results;
-	}
+      delete results;
+   }
 
     return value;
 }
@@ -717,7 +717,7 @@ bool RandomPlayerbotMgr::HandlePlayerbotConsoleCommand(ChatHandler* handler, cha
     }
     else if (cmd == "init" || cmd == "refresh" || cmd == "teleport" || cmd == "revive")
     {
-		sLog.outString("Randomizing bots for %d accounts", sPlayerbotAIConfig.randomBotAccounts.size());
+      sLog.outString("Randomizing bots for %d accounts", sPlayerbotAIConfig.randomBotAccounts.size());
         list<uint32> botIds;
         for (list<uint32>::iterator i = sPlayerbotAIConfig.randomBotAccounts.begin(); i != sPlayerbotAIConfig.randomBotAccounts.end(); ++i)
         {
@@ -736,8 +736,8 @@ bool RandomPlayerbotMgr::HandlePlayerbotConsoleCommand(ChatHandler* handler, cha
 
                     botIds.push_back(botId);
                 } while (results->NextRow());
-				delete results;
-			}
+            delete results;
+         }
         }
 
         int processed = 0;
@@ -936,8 +936,8 @@ void RandomPlayerbotMgr::PrintStats()
     }
 
     sLog.outString("Per level:");
-	uint32 maxLevel = sWorld.getConfig(CONFIG_UINT32_MAX_PLAYER_LEVEL);
-	for (uint32 i = 0; i < 10; ++i)
+   uint32 maxLevel = sWorld.getConfig(CONFIG_UINT32_MAX_PLAYER_LEVEL);
+   for (uint32 i = 0; i < 10; ++i)
     {
         if (!alliance[i] && !horde[i])
             continue;

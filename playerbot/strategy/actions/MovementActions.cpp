@@ -22,7 +22,7 @@ bool MovementAction::MoveNear(WorldObject* target, float distance)
     if (!target)
         return false;
 
-	distance += target->GetObjectBoundingRadius();
+   distance += target->GetObjectBoundingRadius();
 
     float followAngle = GetFollowAngle();
     for (float angle = followAngle; angle <= followAngle + 2 * M_PI; angle += M_PI / 4)
@@ -149,7 +149,7 @@ bool MovementAction::IsMovingAllowed(uint32 mapId, float x, float y, float z)
 bool MovementAction::IsMovingAllowed()
 {
     if (bot->IsFrozen() || bot->IsPolymorphed() ||
-			(bot->IsDead() && !bot->HasFlag(PLAYER_FLAGS, PLAYER_FLAGS_GHOST)) ||
+         (bot->IsDead() && !bot->HasFlag(PLAYER_FLAGS, PLAYER_FLAGS_GHOST)) ||
             bot->IsBeingTeleported() ||
             bot->IsInRoots() ||
             bot->HasAuraType(SPELL_AURA_MOD_CONFUSE) || bot->IsCharmed() ||

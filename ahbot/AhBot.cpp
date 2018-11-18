@@ -525,7 +525,7 @@ int AhBot::AddAuction(int auction, Category* category, ItemPrototype const* prot
     }
 
 
-	string name;
+   string name;
     if (!sObjectMgr.GetPlayerNameByGUID((uint64)owner, name))
         return 0;
 
@@ -920,7 +920,7 @@ uint32 AhBot::GetRandomBidder(uint32 auctionHouse)
     for (vector<uint32>::iterator i = guids.begin(); i != guids.end(); ++i)
     {
         uint32 guid = *i;
-		string name;
+      string name;
         if (!sObjectMgr.GetPlayerNameByGUID((uint64)guid, name))
             continue;
 

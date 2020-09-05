@@ -101,7 +101,9 @@ PlayerbotAI::PlayerbotAI(Player* bot) :
     masterIncomingPacketHandlers.AddHandler(CMSG_GROUP_UNINVITE_GUID, "uninvite");
     masterIncomingPacketHandlers.AddHandler(CMSG_PUSHQUESTTOPARTY, "quest share");
     masterIncomingPacketHandlers.AddHandler(CMSG_GUILD_INVITE, "guild invite");
+    masterIncomingPacketHandlers.AddHandler(CMSG_BATTLEFIELD_PORT, "accept bg invite");  
 
+    botOutgoingPacketHandlers.AddHandler(SMSG_BATTLEFIELD_STATUS, "bg invite"); 
     botOutgoingPacketHandlers.AddHandler(SMSG_GROUP_INVITE, "group invite");
     botOutgoingPacketHandlers.AddHandler(BUY_ERR_NOT_ENOUGHT_MONEY, "not enough money");
     botOutgoingPacketHandlers.AddHandler(BUY_ERR_REPUTATION_REQUIRE, "not enough reputation");
@@ -503,7 +505,8 @@ void PlayerbotAI::DoNextAction()
         ChangeEngine(BOT_STATE_NON_COMBAT);
 
     Group *group = bot->GetGroup();
-    if (!master && group)
+    //if (!master && group)
+       if (!master && group && !bot->InBattleGround())
     {
         for (GroupReference *gref = group->GetFirstMember(); gref; gref = gref->next())
         {

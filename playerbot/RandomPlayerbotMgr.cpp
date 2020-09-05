@@ -432,6 +432,9 @@ void RandomPlayerbotMgr::RandomTeleport(Player* bot, vector<WorldLocation> &locs
     if (bot->IsBeingTeleported())
         return;
 
+    if (bot->InBattleGround())
+        return;
+
 	if (bot->getLevel() < 5)
 		return;
 
@@ -604,12 +607,18 @@ void RandomPlayerbotMgr::PrepareTeleportCache()
 
 void RandomPlayerbotMgr::RandomTeleportForLevel(Player* bot)
 {
+   if (bot->InBattleGround())
+       return;
+
     sLog.outDetail("Preparing location to random teleporting bot %s for level %u", bot->GetName(), bot->getLevel());
     RandomTeleport(bot, locsPerLevelCache[bot->getLevel()]);
 }
 
 void RandomPlayerbotMgr::RandomTeleport(Player* bot)
 {
+   if (bot->InBattleGround())
+      return;
+
     PerformanceMonitorOperation *pmo = sPerformanceMonitor.start(PERF_MON_RNDBOT, "RandomTeleport");
     vector<WorldLocation> locs;
 
@@ -646,6 +655,9 @@ void RandomPlayerbotMgr::RandomTeleport(Player* bot)
 
 void RandomPlayerbotMgr::Randomize(Player* bot)
 {
+   if (bot->InBattleGround())
+      return;
+
     if (bot->getLevel() == 1)
         RandomizeFirst(bot);
     else
@@ -735,6 +747,9 @@ uint32 RandomPlayerbotMgr::GetZoneLevel(uint16 mapId, float teleX, float teleY, 
 
 void RandomPlayerbotMgr::Refresh(Player* bot)
 {
+   if (bot->InBattleGround())
+      return;
+
     sLog.outDetail("Refreshing bot %s", bot->GetName());
     PerformanceMonitorOperation *pmo = sPerformanceMonitor.start(PERF_MON_RNDBOT, "Refresh");
     if (sServerFacade.UnitIsDead(bot))
@@ -1024,12 +1039,15 @@ void RandomPlayerbotMgr::OnPlayerLogin(Player* player)
             PlayerbotAI* ai = bot->GetPlayerbotAI();
             if (member == player && (!ai->GetMaster() || ai->GetMaster()->GetPlayerbotAI()))
             {
+               if (!bot->InBattleGround())
+               {
                 ai->SetMaster(player);
                 ai->ResetStrategies();
                 ai->TellMaster("Hello");
                 ai->ChangeStrategy("-rpg", BOT_STATE_NON_COMBAT);
                 ai->ChangeStrategy("-grind", BOT_STATE_NON_COMBAT);
                 break;
+               }
             }
         }
     }

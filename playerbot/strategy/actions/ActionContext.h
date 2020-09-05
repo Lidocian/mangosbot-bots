@@ -29,6 +29,7 @@
 #include "RemoveAuraAction.h"
 #include "RpgAction.h"
 #include "RtiAction.h"
+#include "BattlegroundJoinAction.h"
 
 namespace ai
 {
@@ -106,9 +107,11 @@ namespace ai
             creators["try emergency"] = &ActionContext::try_emergency;
             creators["give food"] = &ActionContext::give_food;
             creators["give water"] = &ActionContext::give_water;
+            creators["wsg join"] = &ActionContext::wsg_join;
         }
 
     private:
+        static Action* wsg_join(PlayerbotAI* ai) { return new WsGJoinAction(ai); }
         static Action* give_water(PlayerbotAI* ai) { return new GiveWaterAction(ai); }
         static Action* give_food(PlayerbotAI* ai) { return new GiveFoodAction(ai); }
         static Action* ra(PlayerbotAI* ai) { return new RemoveAuraAction(ai); }

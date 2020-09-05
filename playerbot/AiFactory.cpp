@@ -133,7 +133,16 @@ void AiFactory::AddDefaultCombatStrategies(Player* player, PlayerbotAI* const fa
 {
     int tab = GetPlayerSpecTab(player);
 
-    engine->addStrategies("racials", "chat", "default", "aoe", "potions", "cast time", "conserve mana", "duel", "pvp", "stay", NULL);
+    //engine->addStrategies("racials", "chat", "default", "aoe", "potions", "cast time", "conserve mana", "duel", "pvp", "stay", NULL);
+
+    if (player->InBattleGround() && player->GetBattleGroundTypeId() == BattleGroundTypeId::BATTLEGROUND_WS)
+       {
+       engine->addStrategies("racials", "chat", "default", "aoe", "potions", "pvp", "warsong", NULL);
+       }
+    else
+       {
+       engine->addStrategies("racials", "chat", "default", "aoe", "potions", "cast time", "conserve mana", "duel", "bg", "pvp", NULL);
+       }
 
     switch (player->getClass())
     {
@@ -330,8 +339,19 @@ void AiFactory::AddDefaultNonCombatStrategies(Player* player, PlayerbotAI* const
             nonCombatEngine->addStrategy("dps assist");
             break;
     }
-    nonCombatEngine->addStrategies("nc", "food", "stay", "sit", "chat", "follow",
-            "default", "quest", "loot", "gather", "duel", "emote", "conserve mana",/* "collision",*/ "buff", NULL);
+   // nonCombatEngine->addStrategies("nc", "food", "stay", "sit", "chat", "follow",
+    //        "default", "quest", "loot", "gather", "duel", "emote", "conserve mana",/* "collision",*/ "buff", NULL);
+
+    if (player->InBattleGround() && player->GetBattleGroundTypeId() == BattleGroundTypeId::BATTLEGROUND_WS)
+       {
+       nonCombatEngine->addStrategies("grind", "nc", "chat",
+          "default", "emote", "warsong", NULL);
+       }
+    else
+       {
+       nonCombatEngine->addStrategies("nc", "food", "stay", "sit", "chat", "follow",
+          "default", "quest", "loot", "gather", "duel", "emote", "conserve mana",/* "collision",*/ "buff", NULL);
+       }
 
     if (sRandomPlayerbotMgr.IsRandomBot(player))
     {

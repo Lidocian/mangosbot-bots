@@ -9,6 +9,10 @@ void WorldPacketHandlerStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
     PassTroughStrategy::InitTriggers(triggers);
 
     triggers.push_back(new TriggerNode(
+        "bg invite",
+        NextAction::array(0, new NextAction("accept bg invitation", relevance), NULL)));
+
+    triggers.push_back(new TriggerNode(
         "group invite",
         NextAction::array(0, new NextAction("accept invitation", relevance), NULL)));
 
@@ -101,6 +105,7 @@ WorldPacketHandlerStrategy::WorldPacketHandlerStrategy(PlayerbotAI* ai) : PassTr
     supported.push_back("lfg teleport");
     supported.push_back("random bot update");
     supported.push_back("inventory change failure");
+    supported.push_back("bg invite");
 }
 
 
@@ -109,4 +114,8 @@ void ReadyCheckStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
     triggers.push_back(new TriggerNode(
         "timer",
         NextAction::array(0, new NextAction("ready check", relevance), NULL)));
+
+    triggers.push_back(new TriggerNode(
+        "timer",
+        NextAction::array(0, new NextAction("bg invite", relevance), NULL)));
 }

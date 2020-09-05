@@ -27,6 +27,29 @@ void LfgStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
         NextAction::array(0, new NextAction("lfg accept", 1.0f), NULL)));
 }
 
+void BGStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+{
+   triggers.push_back(new TriggerNode(
+    "no possible targets",
+        NextAction::array(0, new NextAction("wsg join", 1.0f), NULL)));
+      
+    triggers.push_back(new TriggerNode(
+       "often",
+       NextAction::array(0, new NextAction("wsg join", 1.0f), NULL)));
+
+    triggers.push_back(new TriggerNode(
+       "bg status",
+       NextAction::array(0, new NextAction("bg status", 1.0f), NULL)));
+   
+}
+
+void WarsongStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+{
+    triggers.push_back(new TriggerNode(
+       "no possible targets",
+       NextAction::array(0, new NextAction("bg tactics ws", 1.0f), NULL)));
+ }
+
 void CollisionStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
 {
     triggers.push_back(new TriggerNode(

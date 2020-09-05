@@ -350,7 +350,7 @@ void AiFactory::AddDefaultNonCombatStrategies(Player* player, PlayerbotAI* const
     else
        {
        nonCombatEngine->addStrategies("nc", "food", "stay", "sit", "chat", "follow",
-          "default", "quest", "loot", "gather", "duel", "emote", "conserve mana",/* "collision",*/ "buff", NULL);
+          "default", "quest", "loot", "gather", "duel", "emote", "conserve mana",/* "collision",*/ "buff", "bg", NULL);
        }
 
     if (sRandomPlayerbotMgr.IsRandomBot(player))

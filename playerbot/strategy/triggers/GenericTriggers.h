@@ -683,6 +683,32 @@ namespace ai
             return AI_VALUE(Unit*, "party member without water") && AI_VALUE2(uint8, "item count", item);
         }
     };
+    class PlayerHasNoFlag : public Trigger
+    {
+    public:
+       PlayerHasNoFlag(PlayerbotAI* ai) : Trigger(ai, "player has no flag") {}
+       
+    public:
+       virtual bool IsActive();
+    };
+    
+    class PlayerIsInBattleground : public Trigger
+    {
+    public:
+       PlayerIsInBattleground(PlayerbotAI* ai) : Trigger(ai, "in battleground") {}
+
+    public:
+        virtual bool IsActive();
+    };
+    
+    class PlayerIsInBattlegroundWithoutFlag : public Trigger
+    {
+    public:
+       PlayerIsInBattlegroundWithoutFlag(PlayerbotAI* ai) : Trigger(ai, "in battleground without flag") {}
+
+    public:
+       virtual bool IsActive();
+    };
 }
 
 #include "RangeTriggers.h"

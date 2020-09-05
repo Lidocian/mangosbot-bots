@@ -33,11 +33,11 @@ private:
 
    ObjectGuid AllianceWsgFlagStand(BattleGround *bg);
    ObjectGuid HordeWsgFlagStand(BattleGround *bg);
-<<<<<<< HEAD
+
    //ObjectGuid FindWsHealthy(BattleGround *bg);
    //ObjectGuid FindWsGHordeFlag(BattleGround *bg);
-=======
+
    ObjectGuid FindWsGAllianceFlag(BattleGround *bg);
    ObjectGuid FindWsGHordeFlag(BattleGround *bg);
->>>>>>> 5e1d191...  [PLAYERBOTS] BG
+
 };

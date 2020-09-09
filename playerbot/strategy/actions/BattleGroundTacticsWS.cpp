@@ -32,6 +32,12 @@
 using namespace ai;
 
 
+enum GameObjectsWS
+{
+   GO_WS_SILVERWING_FLAG = 179830,
+   GO_WS_WARSONG_FLAG = 179831
+};
+
 ObjectGuid BGTacticsWS::AllianceWsgFlagStand(BattleGround * bg)
 {
    ObjectGuid wsgflagA;
@@ -53,11 +59,11 @@ ObjectGuid BGTacticsWS::HordeWsgFlagStand(BattleGround * bg)
    return wsgflagH;
 }
 
-bool BGTacticsWS::consumeHealthy(BattleGround *bg)
+/*bool BGTacticsWS::consumeHealthy(BattleGround *bg)
 {
 
    //alliance healthy
-   if (bot->GetHealthPercent() < 50.0f)
+   if (bot->GetHealthPercent() < 70.0f)
    {
       float ax = 1111.526733f;
       float ay = 1352.458130f;
@@ -80,7 +86,7 @@ bool BGTacticsWS::consumeHealthy(BattleGround *bg)
    }
    return false;
 
-}
+}*/
 /*ObjectGuid BGTacticsWS::FindWsHealthy(BattleGround * bg)
 {
    list<ObjectGuid> bg_gos = *ai->GetAiObjectContext()->GetValue<list<ObjectGuid> >("bg game objects");
@@ -175,7 +181,7 @@ ObjectGuid BGTacticsWS::FindWsGHordeFlag(BattleGround * bg)
 
 
 //consume healthy, if low on health
-/*bool BGTacticsWS::consumeHealthy(BattleGround *bg)
+bool BGTacticsWS::consumeHealthy(BattleGround *bg)
 {
 
    //alliance healthy
@@ -206,7 +212,7 @@ ObjectGuid BGTacticsWS::FindWsGHordeFlag(BattleGround * bg)
    }
    return false;
 
-}*/
+}
 
 
 //run to enemy flag if not taken yet
@@ -220,11 +226,11 @@ bool BGTacticsWS::moveTowardsEnemyFlag(BattleGroundWS *bg)
       return false;
 
    WorldObject* target_obj = bg->GetBgMap()->GetGameObject(bg->GetDroppedFlagGuid(bg->GetOtherTeam(bot->GetTeam()) == ALLIANCE ? HORDE : ALLIANCE));
-   if (!target_obj)
+   if (target_obj == NULL)
    {
       //if no dropped flag
       if (bot->GetTeam() == HORDE)
-         target_obj = bg->GetBgMap()->GetGameObject(AllianceWsgFlagStand(bg));  //silverwing  
+         target_obj = bg->GetBgMap()->GetGameObject(AllianceWsgFlagStand(bg)); //silverwing  
       else
          target_obj = bg->GetBgMap()->GetGameObject(HordeWsgFlagStand(bg));  //warsong
    }
@@ -279,13 +285,6 @@ bool BGTacticsWS::homerun(BattleGroundWS *bg)
    if (!(bg->GetFlagState(bg->GetOtherTeam(bot->GetTeam())) == BG_WS_FLAG_STATE_ON_PLAYER))
       return false;
    //if (bot->GetObjectGuid() == bg->GetFlagPickerGUID(bg->GetOtherTeam(bot->GetTeam()) == ALLIANCE ? ALLIANCE : HORDE)) //flag-Carrier, bring it home
-   if (bot->GetGUID() == bg->GetFlagPickerGUID(bg->GetOtherTeam(bot->GetTeam()) == ALLIANCE ? ALLIANCE : HORDE)) //flag-Carrier, bring it home
-   {
-      WorldObject* obj = bg->GetBgMap()->GetGameObject(bg->GetFlagPickerGUID(bot->GetTeam() == ALLIANCE ? ALLIANCE : HORDE));
-
-
-   if (!(bg->GetFlagState(bg->GetOtherTeam(bot->GetTeam())) == BG_WS_FLAG_STATE_ON_PLAYER))
-      return false;
    if (bot->GetObjectGuid() == bg->GetFlagPickerGUID(bg->GetOtherTeam(bot->GetTeam()) == ALLIANCE ? ALLIANCE : HORDE)) //flag-Carrier, bring it home
    {
       WorldObject* obj = bg->GetBgMap()->GetGameObject(bg->GetFlagPickerGUID(bot->GetTeam() == ALLIANCE ? ALLIANCE : HORDE));
@@ -304,7 +303,8 @@ bool BGTacticsWS::homerun(BattleGroundWS *bg)
       }
       return runPathTo(obj, bg);
    }
-   else {
+   else
+   {
     
       bool supporter = bot->Preference < 5;
       //random choice if defense or offense
@@ -321,7 +321,8 @@ bool BGTacticsWS::homerun(BattleGroundWS *bg)
             return Follow(ourGuy);
          }
       }
-      else { //as a none supporter, attack their flag, if they carry it
+      else 
+      { //as a none supporter, attack their flag, if they carry it
 
          
 
@@ -336,97 +337,7 @@ bool BGTacticsWS::homerun(BattleGroundWS *bg)
    }
    return false;
 }
-   if (!(bg->GetFlagState(bg->GetOtherTeam(bot->GetTeam())) == BG_WS_FLAG_STATE_ON_PLAYER))
-      return false;
-
-
-   if (bot->GetObjectGuid() == bg->GetAllianceFlagCarrierGuid()) //flag-Carrier, bring it home (hordeguy)
-   {
-      GameObject* obj = bg->GetBgMap()->GetGameObject(bg->GetHordeFlagCarrierGuid());
-      if (!obj)
-      {
-         obj = bg->GetBgMap()->GetGameObject(HordeWsgFlagStand(bg));  //warsong
-      }
-      if (bot->IsWithinDistInMap(obj, 10) && (bg->GetFlagState(bot->GetTeam()) == BG_WS_FLAG_STATE_ON_BASE))
-      {
-         bg->EventPlayerCapturedFlag(bot);
-         return true;
-      }
-      return runPathTo(obj, bg);
-   }
-   if (bot->GetObjectGuid() == bg->GetHordeFlagCarrierGuid())//flag-Carrier, bring it home (allianceguy)
-   {
-      GameObject* obj = bg->GetBgMap()->GetGameObject(bg->GetAllianceFlagCarrierGuid());
-      if (!obj)
-      {
-         obj = bg->GetBgMap()->GetGameObject(AllianceWsgFlagStand(bg));  //silverwing
-      }
-      if (bot->IsWithinDistInMap(obj, 10) && (bg->GetFlagState(bot->GetTeam()) == BG_WS_FLAG_STATE_ON_BASE))
-      {
-         bg->EventPlayerCapturedFlag(bot);
-         return true;
-      }
-      return runPathTo(obj, bg);
-   }
-   else
-   {
-      //hordeguy     GetAllianceFlagCarrierGuid
-      //allianceguy  GetHordeFlagCarrierGuid
-      int Preference = urand(0, 9);
-      bool supporter = 0;
-      //random choice if defense or offense
-      if (Preference < 5)
-      {
-         supporter = bot;
-      }
-      if (supporter || (bg->GetFlagState(bot->GetTeam()) != BG_WS_FLAG_STATE_ON_PLAYER))
-      {
-         if (bot->GetTeam() == ALLIANCE);
-         {
-            Player* ourGuyA = sObjectAccessor.FindPlayer(bg->GetHordeFlagCarrierGuid());
-            if (ourGuyA != nullptr)
-            {
-               if (!bot->IsWithinDist(ourGuyA, 40))
-                  return runPathTo(ourGuyA, bg);
-               return Follow(ourGuyA);
-            }
-         }
-         if (bot->GetTeam() == HORDE);
-         {
-            Player* ourGuyH = sObjectAccessor.FindPlayer(bg->GetAllianceFlagCarrierGuid());
-            if (ourGuyH != nullptr)
-            {
-               if (!bot->IsWithinDist(ourGuyH, 40))
-                  return runPathTo(ourGuyH, bg);
-               return Follow(ourGuyH);
-            }
-         }
-      }
-      else
-      {
-         //as a none supporter, attack their flag, if they carry it
-         if (bot->GetTeam() == HORDE);
-         {
-            Player* theirGuyA = sObjectAccessor.FindPlayer(bg->GetHordeFlagCarrierGuid());
-            if (theirGuyA != nullptr)
-            {
-               return runPathTo(theirGuyA, bg);
-            }
-         }
-         if (bot->GetTeam() == ALLIANCE);
-         {
-            Player* theirGuyH = sObjectAccessor.FindPlayer(bg->GetAllianceFlagCarrierGuid());
-            if (theirGuyH != nullptr)
-            {
-               return runPathTo(theirGuyH, bg);
-            }
-         }
-      }
-   }
-
-   return false;
-}
-
+  
 //the alliance base entrance is at x=1351.759155 , y=1462.368042, z = 324.673737
 //the horde base entrance is at x=1125.778076, y=1452.059937, z =315.698883
 //left center of the battlefield is at x=1239.085693,y=1541.408569,z=306.491791
@@ -729,24 +640,7 @@ bool BGTacticsWS::Execute(Event event)
       return false;
    if (bot->IsDead() && bot->InBattleGround())
    {
-      //bot->GetMotionMaster()->MovementExpired();
-      
-      
-         BattleGround *bg = bot->GetBattleGround();
-         const WorldSafeLocsEntry *pos = bg->GetClosestGraveYard(bot);
-         if (!bot->IsWithinDist3d(pos->x, pos->y, pos->z, 3.0))
-         {
-            //this is spirit release confirm?            
-            bot->RemovePet(PET_SAVE_NOT_IN_SLOT);
-            bot->BuildPlayerRepop();
-            bot->SpawnCorpseBones();
-            bot->RepopAtGraveyard();
-         }
-         else {
-            bot->ResurrectPlayer(1.0f);
-         }
-         //return false;  
-
+      bot->GetMotionMaster()->MovementExpired();
    }
    //Check for Warsong.
    if (bot->GetBattleGround()->GetTypeID() == BattleGroundTypeId::BATTLEGROUND_WS)
@@ -763,14 +657,14 @@ bool BGTacticsWS::Execute(Event event)
       //In Warsong, the bots run to the other flag and take it, try to get back and protect each other.
       //If our flag was taken, pures will try to get it back
       BattleGroundWS* bg = (BattleGroundWS *)bot->GetBattleGround();
-      if (bg != nullptr && !bot->IsDead())
+      if (bg != NULL && !bot->IsDead())
       {
          //If flag is close, always click it.
          bool alreadyHasFlag = bg->GetFlagState(bg->GetOtherTeam(bot->GetTeam())) == BG_WS_FLAG_STATE_ON_PLAYER;
          if (!alreadyHasFlag)
          {
             GameObject* target_obj = bg->GetBgMap()->GetGameObject(bg->GetDroppedFlagGuid(bg->GetOtherTeam(bot->GetTeam()) == ALLIANCE ? HORDE : ALLIANCE));
-            if (!target_obj)
+            if (target_obj == NULL)
             {
                if (bot->GetTeam() == HORDE)
                {
@@ -836,7 +730,7 @@ bool BGTacticsWS::Execute(Event event)
          }
          if (!moving)
          {
-            if (bg->GetBgMap()->GetGameObject(HordeWsgFlagStand(bg)) == NULL && bg->GetBgMap()->GetGameObject(AllianceWsgFlagStand(bg)) == NULL)
+            if(bg->GetBgMap()->GetGameObject(HordeWsgFlagStand(bg)) == NULL && bg->GetBgMap()->GetGameObject(AllianceWsgFlagStand(bg)) == NULL)
 
             {
                float distance = sPlayerbotAIConfig.tooCloseDistance + sPlayerbotAIConfig.grindDistance * urand(3, 10) / 10.0f;
@@ -852,8 +746,9 @@ bool BGTacticsWS::Execute(Event event)
                   y += urand(0, distance) - distance / 2;
                   bot->UpdateGroundPositionZ(x, y, z);
 
-                  //if (map->IsInWater(x, y, z))
-
+                  if (map->GetTerrain()->IsInWater(x, y, z))
+                     continue;
+                    
                   bool moved = MoveNear(bot->GetMapId(), x, y, z);
                   if (moved)
                      break;
@@ -862,6 +757,7 @@ bool BGTacticsWS::Execute(Event event)
             else
             {
                AttackAnythingAction* action = new AttackAnythingAction(ai);
+               
                action->Execute(event);
             }
          }
